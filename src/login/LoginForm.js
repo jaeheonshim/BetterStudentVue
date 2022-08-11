@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 export default function LoginForm() {
     const navigate = useNavigate();
 
+    const { appState, setAppState } = useContext(AppContext);
+
     const [loginFormInfo, setLoginFormInfo] = useState({
         id: "",
         password: ""
@@ -17,8 +19,6 @@ export default function LoginForm() {
     const [errorText, setErrorText] = useState();
     const [showModal, setShowModal] = useState(false);
     const [name, setName] = useState();
-
-    const { appState, setAppState } = useContext(AppContext);
 
     const handleClose = () => setShowModal(false);
     const handleOpen = () => setShowModal(true);
