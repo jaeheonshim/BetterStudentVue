@@ -7,7 +7,7 @@ import Home from './Home/Home';
 export const AppContext = createContext();
 
 function App() {
-  const [appState, setAppState] = useState(JSON.parse(localStorage.getItem("bsv.appState")));
+  const [appState, setAppState] = useState(JSON.parse(localStorage.getItem("bsv.appState") || "{}"));
 
   useEffect(() => {
     localStorage.setItem("bsv.appState", JSON.stringify(appState));
@@ -18,7 +18,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={!appState.id || !appState.password ? <Navigate to="/login" /> : <Home />} />
-          <Route path="login" element={<Login />} />
+          <Route path="login" element={appState.id || appState.password ? <Navigate to="/" /> : <Login />} />
         </Routes>
       </BrowserRouter>
     </AppContext.Provider>
