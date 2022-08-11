@@ -7,7 +7,7 @@ export default function Home() {
     const { appState, setAppState } = useContext(AppContext);
 
     const updateGradebookState = () => {
-        getGradebook("202012482", "j@3h30n5h1m").then((data) => {
+        getGradebook(appState.id, appState.password).then((data) => {
             setAppState({...appState, gradebook: data});
         })
     }
