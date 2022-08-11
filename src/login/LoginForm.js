@@ -1,4 +1,4 @@
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Card, Form } from "react-bootstrap";
 import { useContext, useState } from "react"
 import "../data/Gradebook"
 import { getStudentInfo } from "../data/Gradebook"
@@ -68,24 +68,24 @@ export default function LoginForm() {
                 </Modal.Footer>
             </Modal>
 
-            <div className="card">
-                <div className="card-body">
-                    <h3 className="card-title">Login</h3>
+            <Card>
+                <Card.Body>
+                    <Card.Title><h3>Login</h3></Card.Title>
                     <p>Use your GCPS credentials</p>
-                    <form onChange={handleChange}>
-                        <div class="mb-3">
-                            <label for="studentID" className="form-label">Student ID</label>
-                            <input type="text" className="form-control" id="studentID" name="id" value={loginFormInfo.id}></input>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" className="form-label">Password</label>
-                            <input type="password" className="form-control" id="password" name="password" value={loginFormInfo.password}></input>
-                        </div>
+                    <Form onChange={handleChange}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Student ID</Form.Label>
+                            <Form.Control type="text" name="id" value={loginFormInfo.id}></Form.Control>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" name="password" value={loginFormInfo.password}></Form.Control>
+                        </Form.Group>
                         <p className="text-danger">{errorText}</p>
-                        <button type="submit" onClick={onSubmit} class="btn btn-primary" disabled={submitDisabled}>Login</button>
-                    </form>
-                </div>
-            </div>
+                        <Button variant="primary" type="submit" onClick={onSubmit} disabled={submitDisabled}>Login</Button>
+                    </Form>
+                </Card.Body>
+            </Card>
         </>
     )
 }
