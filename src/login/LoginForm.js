@@ -1,10 +1,13 @@
 import { Button, Modal, Card, Form } from "react-bootstrap";
-import { useContext, useState } from "react"
-import "../data/Gradebook"
+import { useContext, useState } from "react";
+import "../data/Gradebook";
 import { getStudentInfo } from "../data/Gradebook"
 import { AppContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
+    const navigate = useNavigate();
+
     const [loginFormInfo, setLoginFormInfo] = useState({
         id: "",
         password: ""
@@ -51,6 +54,7 @@ export default function LoginForm() {
     const confirmLogin = () => {
         handleClose();
         setAppState({...appState, id: loginFormInfo.id, password: loginFormInfo.password, name: name});
+        navigate("/");
     }
 
     return (
@@ -68,7 +72,7 @@ export default function LoginForm() {
                 </Modal.Footer>
             </Modal>
 
-            <Card>
+            <Card className="mt-5">
                 <Card.Body>
                     <Card.Title><h3>Login</h3></Card.Title>
                     <p>Use your GCPS credentials</p>
@@ -84,6 +88,12 @@ export default function LoginForm() {
                         <p className="text-danger">{errorText}</p>
                         <Button variant="primary" type="submit" onClick={onSubmit} disabled={submitDisabled}>Login</Button>
                     </Form>
+                </Card.Body>
+            </Card>
+            <Card className="mt-3">
+                <Card.Body>
+                    <Card.Title><h3>Security and Privacy</h3></Card.Title>
+                    <p>Your credentials <b>will never leave your device</b>.</p>
                 </Card.Body>
             </Card>
         </>

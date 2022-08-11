@@ -1,7 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
-import LoginForm from './login/LoginForm';
+import LoginForm from './Login/LoginForm';
 import { createContext, useState } from 'react';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Home from './Home/Home';
 
 export const AppContext = createContext();
 
@@ -10,9 +13,12 @@ function App() {
 
   return (
     <AppContext.Provider value={{appState: appState, setAppState: setAppState}}>
-      <div className="container">
-        <LoginForm />
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={!appState.id || !appState.password ? <Navigate to="/login" /> : <Home />} />
+          <Route path="login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
     </AppContext.Provider>
   );
 }
