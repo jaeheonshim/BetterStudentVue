@@ -4,6 +4,7 @@ import "../data/Gradebook";
 import { getStudentInfo } from "../data/Gradebook"
 import { AppContext } from "../App";
 import { useNavigate } from "react-router-dom";
+import dataflow from "./dataflow.png";
 
 export default function LoginForm() {
     const navigate = useNavigate();
@@ -90,10 +91,11 @@ export default function LoginForm() {
                     </Form>
                 </Card.Body>
             </Card>
-            <Card className="mt-3">
+            <Card className="mt-3 mb-3">
                 <Card.Body>
                     <Card.Title><h3>Security and Privacy</h3></Card.Title>
-                    <p>Your credentials <b>will never leave your device</b>. BetterStudentVue makes requests directly from the web application to the StudentVue server, with no intermediate 3rd-party involved. Your username and password are only stored on your device and never sent to any server other than the official StudentVue server.</p>
+                    <p>Your credentials <b>will never leave your device</b>. BetterStudentVue makes requests directly from the web application to the StudentVue server, with no intermediate 3rd-party involved. Your username and password are only stored on your device and never sent to any server other than the official StudentVue server. <b>Gradebook information never leaves your device.</b></p>
+                    <img className="img-fluid" src={dataflow} />
                 </Card.Body>
             </Card>
         </>

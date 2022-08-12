@@ -30,6 +30,12 @@ export default function Home() {
         });
     };
 
+    const refresh = () => {
+        const {gradebook, ...newAppstate} = appState;
+        setAppState(newAppstate);
+        updateGradebookState();
+    }
+
     useEffect(() => {
         updateGradebookState();
     }, []);
@@ -39,6 +45,11 @@ export default function Home() {
         <Header />
         <div className="container">
             <h1 className="mt-3">Welcome, {appState.name}</h1>
+
+            <div className="d-grid mb-2">
+                <Button onClick={refresh} variant="outline-secondary">Refresh Gradebook</Button>
+            </div>
+
             {appState.gradebook && !openedData && 
                 <GradebookWidget gradebook={appState.gradebook} openCourse={openCourse} />
             }
