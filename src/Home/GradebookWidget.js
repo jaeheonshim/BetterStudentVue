@@ -10,11 +10,11 @@ export default function GradebookWidget(props) {
     const openCourse = props.openCourse;
 
     const content = gradebook.reportingPeriods.map((period, index) => (
-        <GradingTermDisplay GradePeriod={period.GradePeriod}>
+        <GradingTermDisplay key={index} GradePeriod={period.GradePeriod}>
             {
-                gradebook.courses.map((course) => (
-                    <div role="button" onClick={() => openCourse(course, index)}>
-                    <GradeSummary  Period={course.Period} Title={course.Title} Room={course.Room} Staff={course.Staff} CalculatedScoreString={course.Marks[index].CalculatedScoreString} />
+                gradebook.courses.map((course, j) => (
+                    <div role="button" key={course.Title + j} onClick={() => openCourse(course, index)}>
+                        <GradeSummary  Period={course.Period} Title={course.Title} Room={course.Room} Staff={course.Staff} CalculatedScoreString={course.Marks[index].CalculatedScoreString} />
                     </div>
                 ))
             }
