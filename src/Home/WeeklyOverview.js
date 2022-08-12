@@ -8,7 +8,7 @@ export default function WeeklyOverview(props) {
     const startDate = new Date(endDate);
     startDate.setDate(startDate.getDate() - 7);
 
-    const gradebook = props.gradebook;
+    const gradebook = {...props.gradebook};
     if(!gradebook) return;
     let totalAssignments = [];
 
@@ -22,10 +22,10 @@ export default function WeeklyOverview(props) {
         const weekAssignments = course.Marks[0].Assignments.filter((assignment) => {
             const dateParts = assignment.Date.split("/");
             const date = new Date(dateParts[2], dateParts[0] - 1, dateParts[1]);
+            assignment.course = course.Title;
             assignment.jsDate = date;
             assignment.weight = calcSummary[assignment.Type] || 0;
-            assignment.numScore = parseInt(assignment.Score.split(" ")[0]);
-            console.log(assignment);
+            assignment.numScore = /^\+?(0|[1-9]\d*)$/.test(assignment.Score.split(" ")[0]) ? parseInt(assignment.Score.split(" ")[0]) : -1;
             return (date >= startDate && date <= endDate);
         });
 
@@ -34,8 +34,8 @@ export default function WeeklyOverview(props) {
 
     totalAssignments = totalAssignments.sort((a, b) => b.jsDate - a.jsDate);
    
-    const weightedNumerator = totalAssignments.reduce((p, c) => p + c.weight * c.numScore, 0);
-    const weightedDenominator = totalAssignments.reduce((p, c) => p + c.weight, 0);
+    const weightedNumerator = totalAssignments.reduce((p, c) => c.numScore == -1 ? p : p + c.weight * c.numScore, 0);
+    const weightedDenominator = totalAssignments.reduce((p, c) => c.numScore == -1 ? p : p + c.weight, 0);
 
     const weightedAverage = Math.round((weightedNumerator / weightedDenominator) * 10) / 10;
 
@@ -62,7 +62,7 @@ export default function WeeklyOverview(props) {
             </div>
             <h6 className="fw-semibold mt-4">Assignments ({totalAssignments.length})</h6>
             <hr className="mt-0" />
-            <AssignmentList Assignments={totalAssignments} />
+            <AssignmentList showCourse={true} Assignments={totalAssignments} />
         </div>
     )
 }
