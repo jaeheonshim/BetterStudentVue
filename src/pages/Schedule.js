@@ -3,7 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../App";
 import { getSchedule } from "../data/Gradebook";
 import ScheduleTable from "../Schedule/ScheduleTable";
-import { Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
+import { useInterval } from "../util/hooks";
 
 const DEMO_SCHEDULE = [
     {
@@ -50,15 +51,6 @@ const DEMO_SCHEDULE = [
     }
 ]
 
-function getCurrentTimeSeconds() {
-    let d = new Date();
-    let time = d.getSeconds();
-    time += d.getMinutes() * 60;
-    time += d.getHours() * 3600;
-  
-    return time;
-}
-
 export default function Schedule() {
     const { appState, setAppState } = useContext(AppContext);
 
@@ -69,6 +61,19 @@ export default function Schedule() {
     const [elapsedPercentage, setElapsedPercentage] = useState(0);
     const [currentTimeBlock, setCurrentTimeBlock] = useState(null);
 
+    const [showSyncModal, setShowSyncModal] = useState(false);
+    const closeSyncModal = () => setShowSyncModal(false);
+    const openSyncModal = () => setShowSyncModal(true);
+
+    function getCurrentTimeSeconds() {
+        let d = new Date();
+        let time = d.getSeconds();
+        time += d.getMinutes() * 60;
+        time += d.getHours() * 3600;
+      
+        return time;
+    }
+
     function getCurrentTimeBlock(seconds) {
         for(const tb of schedule) {
             if(seconds >= tb.start && seconds <= tb.end) {
@@ -76,11 +81,24 @@ export default function Schedule() {
             }
         }
 
+        // if not in a scheduled timeblock, return break timeblock
+        for(let i = 1; i < schedule.length; ++i) {
+            if(seconds >= schedule[i - 1].end && seconds <= schedule[i].start) {
+                return {
+                    period: "Break",
+                    title: "Next class: " + schedule[i].title,
+                    start: schedule[i - 1].end,
+                    end: schedule[i].start,
+                    isBreak: true
+                }
+            }
+        }        
+
         return null;
     }
 
     function updateTime() {
-        setTime(getCurrentTimeSeconds());
+        setTime(getCurrentTimeSeconds() + appState.timeOffset);
     }
 
     useEffect(() => {
@@ -100,24 +118,59 @@ export default function Schedule() {
     }, [time]);
 
     useEffect(() => {
-        setInterval(updateTime, 100);
-
         if(appState.id && appState.password) {
             getSchedule(appState.id, appState.password).then(schedule => {
-                console.log("Updated schedule");
                 setSchedule(schedule);
                 setAppState({...appState, schedule: schedule});
             });
         }
     }, []);
 
+    useInterval(updateTime, 100);
+
+    const calcTimeOffset = () => {
+        const bellTimes = [];
+        for(const a of schedule) {
+            bellTimes.push(a.start);
+            bellTimes.push(a.end);
+        }
+
+        bellTimes.sort((a, b) => Math.abs(a - time) - Math.abs(b - time));
+        
+        const delta = bellTimes[0] - time;
+        setAppState({...appState, timeOffset: delta});
+        return delta;
+    }
+
+    const synchronize = () => {
+        calcTimeOffset();
+    }
+
+    const resetSync = () => {
+        setAppState({...appState, timeOffset: 0});
+    }
+
     return (
+        <>
+        <Modal show={showSyncModal} onHide={closeSyncModal}>
+            <Modal.Header closeButton>
+                <Modal.Title>Synchronize clock</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <p>Press the button below exactly when the bell rings. Current time offset: {appState.timeOffset}</p>
+                <div className="d-grid">
+                    <Button onClick={synchronize}>Synchronize Clock</Button>
+                    <Button onClick={resetSync} variant="outline-danger" className="mt-2">Reset Synchronization</Button>
+                </div>
+            </Modal.Body>
+        </Modal>
         <div className="container pt-3">
-            <ScheduleTimer timeTitle={currentTimeBlock && currentTimeBlock.period && currentTimeBlock.period + ": " + currentTimeBlock.title} elapsedTime={elapsedTime} elapsedPercentage={elapsedPercentage} remainingTime={remainingTime} />
+            <ScheduleTimer timeTitle={(currentTimeBlock && !currentTimeBlock.isBreak && currentTimeBlock.period && currentTimeBlock.period + ": " + currentTimeBlock.title) || (currentTimeBlock && currentTimeBlock.isBreak && ("Break " + currentTimeBlock.title))} elapsedTime={elapsedTime} elapsedPercentage={elapsedPercentage} remainingTime={remainingTime} />
             <ScheduleTable schedule={schedule} />
             <div className="d-grid">
-                <Button>Sync Clock</Button>
+                <Button onClick={openSyncModal}>Synchronize Clock</Button>
             </div>
         </div>
+        </>
     );
 }
