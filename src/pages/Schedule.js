@@ -62,7 +62,15 @@ export default function Schedule() {
     const [currentTimeBlock, setCurrentTimeBlock] = useState(null);
 
     const [showSyncModal, setShowSyncModal] = useState(false);
-    const closeSyncModal = () => setShowSyncModal(false);
+    const [justSynchronized, setJustSynchronized] = useState(false);
+    const [syncDialogMessage, setSyncDialogMessage] = useState();
+    const closeSyncModal = () => {
+        setShowSyncModal(false);
+        setTimeout(() => {
+            setJustSynchronized(false);
+            setSyncDialogMessage();
+        }, 1000);
+    }
     const openSyncModal = () => setShowSyncModal(true);
 
     function getCurrentTimeSeconds() {
@@ -86,7 +94,7 @@ export default function Schedule() {
             if(seconds >= schedule[i - 1].end && seconds <= schedule[i].start) {
                 return {
                     period: "Break",
-                    title: "Next class: " + schedule[i].title,
+                    title: "(Next: " + schedule[i].title + ")",
                     start: schedule[i - 1].end,
                     end: schedule[i].start,
                     isBreak: true
@@ -135,7 +143,7 @@ export default function Schedule() {
             bellTimes.push(a.end);
         }
 
-        bellTimes.sort((a, b) => Math.abs(a - time) - Math.abs(b - time));
+        bellTimes.sort((a, b) => Math.abs(a - (time - appState.timeOffset)) - Math.abs(b - (time - appState.timeOffset)));
         
         const delta = bellTimes[0] - time;
         setAppState({...appState, timeOffset: delta});
@@ -144,10 +152,18 @@ export default function Schedule() {
 
     const synchronize = () => {
         calcTimeOffset();
+        setJustSynchronized(true);
+
+        setSyncDialogMessage("Successfully synchronized!")
+        setTimeout(closeSyncModal, 2000);
     }
 
     const resetSync = () => {
         setAppState({...appState, timeOffset: 0});
+
+        setJustSynchronized(true);
+        setSyncDialogMessage("Successfully reset synchronization!");
+        setTimeout(closeSyncModal, 2000);
     }
 
     return (
@@ -158,9 +174,15 @@ export default function Schedule() {
             </Modal.Header>
             <Modal.Body>
                 <p>Press the button below exactly when the bell rings. Current time offset: {appState.timeOffset}</p>
+                {syncDialogMessage}
                 <div className="d-grid">
-                    <Button onClick={synchronize}>Synchronize Clock</Button>
-                    <Button onClick={resetSync} variant="outline-danger" className="mt-2">Reset Synchronization</Button>
+                    {!justSynchronized && (
+                        <>
+                        <Button onClick={synchronize}>Synchronize Clock</Button>
+                        <Button onClick={resetSync} variant="outline-danger" className="mt-2">Reset Synchronization</Button>
+                        </>
+                    )
+                    }
                 </div>
             </Modal.Body>
         </Modal>
