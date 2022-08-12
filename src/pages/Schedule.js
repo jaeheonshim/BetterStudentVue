@@ -62,7 +62,7 @@ function getCurrentTimeSeconds() {
 export default function Schedule() {
     const { appState, setAppState } = useContext(AppContext);
 
-    const [schedule, setSchedule] = useState(DEMO_SCHEDULE);
+    const [schedule, setSchedule] = useState(appState.schedule || DEMO_SCHEDULE);
     const [time, setTime] = useState(0);
     const [remainingTime, setRemainingTime] = useState(0);
     const [elapsedTime, setElapsedTime] = useState(0);
@@ -106,6 +106,7 @@ export default function Schedule() {
             getSchedule(appState.id, appState.password).then(schedule => {
                 console.log("Updated schedule");
                 setSchedule(schedule);
+                setAppState({...appState, schedule: schedule});
             });
         }
     }, []);
