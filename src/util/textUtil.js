@@ -18,3 +18,16 @@ export const toHHMMSS = (secs) => {
         .filter((v,i) => v !== "00" || i > 0)
         .join(":")
 }
+
+export const hhMMToSeconds = (hhmm) => {
+    const a = hhmm.split(":");
+    return parseInt(a[0]) % 12 * 3600 + parseInt(a[1]) * 60 + (a[1].includes("PM") ? 12 * 3600 : 0);
+}
+
+export const dateToDaySeconds = (d) => {
+    let time = d.getSeconds();
+    time += d.getMinutes() * 60;
+    time += d.getHours() * 3600;
+  
+    return time;
+}

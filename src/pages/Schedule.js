@@ -1,5 +1,9 @@
 import ScheduleTimer from "../Schedule/ScheduleTimer";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../App";
+import { getSchedule } from "../data/Gradebook";
+import ScheduleTable from "../Schedule/ScheduleTable";
+import { Button } from "react-bootstrap";
 
 const DEMO_SCHEDULE = [
     {
@@ -56,8 +60,9 @@ function getCurrentTimeSeconds() {
 }
 
 export default function Schedule() {
-    const schedule = DEMO_SCHEDULE;
+    const { appState, setAppState } = useContext(AppContext);
 
+    const [schedule, setSchedule] = useState(DEMO_SCHEDULE);
     const [time, setTime] = useState(0);
     const [remainingTime, setRemainingTime] = useState(0);
     const [elapsedTime, setElapsedTime] = useState(0);
@@ -80,7 +85,13 @@ export default function Schedule() {
 
     useEffect(() => {
         const currentTimeBlock = getCurrentTimeBlock(time);
-        if(!currentTimeBlock) return;
+        if(!currentTimeBlock) {
+            setCurrentTimeBlock({});
+            setRemainingTime(0);
+            setElapsedTime(0);
+            setElapsedPercentage(0);
+            return;
+        }
 
         setCurrentTimeBlock(currentTimeBlock);
         setRemainingTime(currentTimeBlock.end - time);
@@ -90,11 +101,22 @@ export default function Schedule() {
 
     useEffect(() => {
         setInterval(updateTime, 100);
+
+        if(appState.id && appState.password) {
+            getSchedule(appState.id, appState.password).then(schedule => {
+                console.log("Updated schedule");
+                setSchedule(schedule);
+            });
+        }
     }, []);
 
     return (
         <div className="container pt-3">
-            <ScheduleTimer timeTitle={currentTimeBlock.title} elapsedTime={elapsedTime} elapsedPercentage={elapsedPercentage} remainingTime={remainingTime} />
+            <ScheduleTimer timeTitle={currentTimeBlock && currentTimeBlock.period && currentTimeBlock.period + ": " + currentTimeBlock.title} elapsedTime={elapsedTime} elapsedPercentage={elapsedPercentage} remainingTime={remainingTime} />
+            <ScheduleTable schedule={schedule} />
+            <div className="d-grid">
+                <Button>Sync Clock</Button>
+            </div>
         </div>
     );
 }

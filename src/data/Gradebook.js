@@ -1,4 +1,5 @@
 import axios from "axios";
+import { hhMMToSeconds, unescapeHtml } from "../util/textUtil";
 
 const applicationEndpoint = "https://apps.gwinnett.k12.ga.us/sismobile/spvue";
 const BODY_TEMPLATE = "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ProcessWebServiceRequest xmlns=\"http://edupoint.com/webservices/\"><userID>{user}</userID><password>{pass}</password><skipLoginLog>1</skipLoginLog><parent>0</parent><webServiceHandleName>PXPWebServices</webServiceHandleName><methodName>{method}</methodName><paramStr>&lt;Parms&gt;&lt;ChildIntID&gt;0&lt;/ChildIntID&gt;&lt;/Parms&gt;</paramStr></ProcessWebServiceRequest></soap:Body></soap:Envelope>";
@@ -28,7 +29,31 @@ export function getServerStatus() {
 
 export function getSchedule(username, password) {
     return new Promise((resolve, reject) => {
+        axios({
+            method: "post",
+            url: applicationEndpoint + "/Service/PXPCommunication.asmx",
+            headers: {
+                "Content-Type": "text/xml"
+            },
+            data: buildRequestBody("StudentClassList", username, password)
+        }).then(response => {
+            const formatData = response.data.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+            const parser = new DOMParser();
 
+            const xmlDoc = parser.parseFromString(formatData, "text/xml");
+            const schedule = [];
+
+            for(const classInfoDOM of xmlDoc.getElementsByTagName("ClassInfo")) {
+                schedule.push({
+                    period: parseInt(classInfoDOM.getAttribute("Period")),
+                    title: unescapeHtml(classInfoDOM.getAttribute("ClassName")).trim().replace(/^(\d+.\d+)/, "").replace(/-.*/, "").trim(),
+                    start: hhMMToSeconds(classInfoDOM.getAttribute("StartTime")),
+                    end: hhMMToSeconds(classInfoDOM.getAttribute("EndTime"))
+                });
+            }
+
+            resolve(schedule);
+        }).catch(reject);
     });
 }
 
