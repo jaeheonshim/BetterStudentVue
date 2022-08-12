@@ -1,6 +1,6 @@
 import LoginForm from './Login/LoginForm';
 import { createContext, useEffect, useState } from 'react';
-import { HashRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Footer from './Footer';
@@ -16,12 +16,12 @@ function App() {
 
   return (
     <AppContext.Provider value={{appState: appState, setAppState: setAppState}}>
-      <HashRouter>
+      <BrowserRouter basemname={`/${process.env.PUBLIC_URL}`}>
         <Routes>
+          <Route path="/login" element={appState.id || appState.password ? <Navigate to="/" /> : <Login />} />
           <Route path="/" element={!appState.id || !appState.password ? <Navigate to="/login" /> : <Home />} />
-          <Route path="login" element={appState.id || appState.password ? <Navigate to="/" /> : <Login />} />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
       <Footer />
     </AppContext.Provider>
   );
