@@ -6,7 +6,6 @@ import GradingTermDisplay from "./GradingTermDisplay";
 
 export default function GradebookWidget(props) {
     const gradebook = props.gradebook;
-    console.log(gradebook);
 
     const openCourse = props.openCourse;
 
@@ -26,7 +25,7 @@ export default function GradebookWidget(props) {
         <>
             <div className="d-grid mb-2">
                 <Button onClick={props.refresh} variant="outline-secondary">Refresh Gradebook</Button>
-                <Button onClick={props.refresh} className="mt-1" variant="primary">Weekly overview</Button>
+                <Button onClick={props.showWeekly} className="mt-1" variant="primary">Weekly overview</Button>
             </div>
             <Accordion>
                 {content}

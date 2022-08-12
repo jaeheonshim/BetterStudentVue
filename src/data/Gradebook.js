@@ -61,7 +61,6 @@ export function getGradebook(username, password) {
                     for(const markDOM of courseDOM.getElementsByTagName("Mark")) {
                         const assignments = [];
                         for(const assignmentDOM of markDOM.getElementsByTagName("Assignment")) {
-                            console.log(assignmentDOM);
                             assignments.push({
                                 Measure: assignmentDOM.getAttribute("Measure"),
                                 Type: assignmentDOM.getAttribute("Type"),
@@ -74,7 +73,7 @@ export function getGradebook(username, password) {
                         }
 
                         const gradeCalculationSummary = [];
-                        for(const gradeCalculationSummaryDOM of markDOM.getElementsByTagName("assignmentGradeCalc")) {
+                        for(const gradeCalculationSummaryDOM of markDOM.getElementsByTagName("AssignmentGradeCalc")) {
                             gradeCalculationSummary.push({
                                 Type: gradeCalculationSummaryDOM.getAttribute("Type"),
                                 Weight: gradeCalculationSummaryDOM.getAttribute("Weight"),

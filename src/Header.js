@@ -14,7 +14,7 @@ export default function Header() {
 
     return (
         <nav className="navbar navbar-dark bg-dark px-3">
-            <a className="navbar-brand" href="#">
+            <a className="navbar-brand" href="/">
                 Home
                 <div style={{fontSize: "0.55em"}}>BSV - BetterStudentVue</div>
             </a>
