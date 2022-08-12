@@ -93,7 +93,7 @@ export default function LoginForm() {
             <Card className="mt-3">
                 <Card.Body>
                     <Card.Title><h3>Security and Privacy</h3></Card.Title>
-                    <p>Your credentials <b>will never leave your device</b>.</p>
+                    <p>Your credentials <b>will never leave your device</b>. BetterStudentVue makes requests directly from the web application to the StudentVue server, with no intermediate 3rd-party involved. Your username and password are only stored on your device and never sent to any server other than the official StudentVue server.</p>
                 </Card.Body>
             </Card>
         </>
