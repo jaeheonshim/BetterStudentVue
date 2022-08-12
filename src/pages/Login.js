@@ -9,7 +9,6 @@ export default function Login() {
 
     return (
         <>
-        <Header />
         <Container>
             <LoginForm appState={appState} />
         </Container>

@@ -52,7 +52,6 @@ export default function Home() {
 
     return (
         <>
-        <Header />
         <div className="container">
             <h1 className="mt-3">Welcome, {appState.name}</h1>
 

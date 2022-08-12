@@ -26,6 +26,12 @@ export function getServerStatus() {
      });
 }
 
+export function getSchedule(username, password) {
+    return new Promise((resolve, reject) => {
+
+    });
+}
+
 export function getStudentInfo(username, password) {
     return new Promise((resolve, reject) => {
         axios({
