@@ -5,6 +5,7 @@ import GradebookWidget from "../Home/GradebookWidget";
 import { useNavigate } from "react-router-dom";
 import CourseDisplay from "../Home/CourseDisplay";
 import { Button, Spinner } from "react-bootstrap";
+import Header from "../Header";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -29,24 +30,13 @@ export default function Home() {
         });
     };
 
-    const logout = () => {
-        setAppState({});
-        navigate("/login");
-    }
-
     useEffect(() => {
         updateGradebookState();
     }, []);
 
     return (
         <>
-        <nav className="navbar navbar-dark bg-dark px-3">
-            <a className="navbar-brand" href="#">
-                Home
-                <div style={{fontSize: "0.55em"}}>BSV - BetterStudentVue</div>
-            </a>
-            <Button onClick={logout} variant="outline-primary">Logout</Button>
-        </nav>
+        <Header />
         <div className="container">
             <h1 className="mt-3">Welcome, {appState.name}</h1>
             {appState.gradebook && !openedData && 

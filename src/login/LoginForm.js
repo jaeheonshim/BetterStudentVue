@@ -72,7 +72,7 @@ export default function LoginForm() {
                 </Modal.Footer>
             </Modal>
 
-            <Card className="mt-5">
+            <Card className="mt-3">
                 <Card.Body>
                     <Card.Title><h3>Login</h3></Card.Title>
                     <p>Use your GCPS credentials</p>
