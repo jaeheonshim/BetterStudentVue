@@ -52,6 +52,7 @@ export default function Home() {
 
     return (
         <>
+        <Header title="Gradebook" />
         <div className="container">
             <h1 className="mt-3">Welcome, {appState.name}</h1>
 

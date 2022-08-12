@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { AppContext } from "./App";
 import { useNavigate } from "react-router-dom";
 
-export default function Header() {
+export default function Header(props) {
     const navigate = useNavigate();
     const { appState, setAppState } = useContext(AppContext);
 
@@ -15,7 +15,7 @@ export default function Header() {
     return (
         <nav className="navbar navbar-dark bg-dark px-3">
             <a className="navbar-brand" href="/">
-                Home
+                {props.title}
                 <div style={{fontSize: "0.55em"}}>BSV - BetterStudentVue</div>
             </a>
             {appState.id &&
