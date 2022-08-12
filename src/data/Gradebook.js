@@ -61,6 +61,7 @@ export function getGradebook(username, password) {
                     for(const markDOM of courseDOM.getElementsByTagName("Mark")) {
                         const assignments = [];
                         for(const assignmentDOM of markDOM.getElementsByTagName("Assignment")) {
+                            console.log(assignmentDOM);
                             assignments.push({
                                 Measure: assignmentDOM.getAttribute("Measure"),
                                 Type: assignmentDOM.getAttribute("Type"),

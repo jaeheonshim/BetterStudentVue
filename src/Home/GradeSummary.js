@@ -3,7 +3,7 @@ import { unescapeHtml } from "../util/textUtil"
 
 export default function GradeSummary(props) {
     return (
-        <Card className="mb-2">
+        <Card className="mb-2 flex-grow-1">
             <Card.Body className="p-2">
                 <Row>
                     <Col xs={8}>
