@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Footer from './Footer';
 
 export const AppContext = createContext();
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="login" element={appState.id || appState.password ? <Navigate to="/" /> : <Login />} />
         </Routes>
       </BrowserRouter>
+      <Footer />
     </AppContext.Provider>
   );
 }

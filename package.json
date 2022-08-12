@@ -47,6 +47,8 @@
   },
   "devDependencies": {
     "gh-pages": "^4.0.0",
+    "git-revision-webpack-plugin": "^5.0.0",
+    "react-git-info": "^2.0.1",
     "react-router-dom": "^6.3.0"
   }
 }
