@@ -96,6 +96,7 @@ export default function LoginForm() {
                     <Card.Title><h3>Security and Privacy</h3></Card.Title>
                     <p>Your credentials <b>will never leave your device</b>. BetterStudentVue makes requests directly from the web application to the StudentVue server, with no intermediate 3rd-party involved. Your username and password are only stored on your device and never sent to any server other than the official StudentVue server. <b>Gradebook information never leaves your device.</b></p>
                     <img className="img-fluid" src={dataflow} />
+                    <p>Don't just take my word for it - BetterStudentVue is completely open source (under the MIT license), and you can check the source code yourself <a href="https://github.com/jaeheonshim/BetterStudentVue">https://github.com/jaeheonshim/BetterStudentVue</a></p>
                 </Card.Body>
             </Card>
         </>
