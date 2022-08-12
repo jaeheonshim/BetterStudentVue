@@ -46,12 +46,8 @@ export default function Home() {
         <div className="container">
             <h1 className="mt-3">Welcome, {appState.name}</h1>
 
-            <div className="d-grid mb-2">
-                <Button onClick={refresh} variant="outline-secondary">Refresh Gradebook</Button>
-            </div>
-
             {appState.gradebook && !openedData && 
-                <GradebookWidget gradebook={appState.gradebook} openCourse={openCourse} />
+                <GradebookWidget refresh={refresh} gradebook={appState.gradebook} openCourse={openCourse} />
             }
 
             {!appState.gradebook && 

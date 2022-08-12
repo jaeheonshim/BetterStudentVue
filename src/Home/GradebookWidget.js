@@ -1,4 +1,4 @@
-import { Card, Accordion } from "react-bootstrap"
+import { Card, Accordion, Button } from "react-bootstrap"
 import Assignment from "./Assignment";
 import AssignmentList from "./AssignmentList";
 import GradeSummary from "./GradeSummary";
@@ -23,8 +23,14 @@ export default function GradebookWidget(props) {
     ));
 
     return (
-        <Accordion>
-            {content}
-        </Accordion>
+        <>
+            <div className="d-grid mb-2">
+                <Button onClick={props.refresh} variant="outline-secondary">Refresh Gradebook</Button>
+                <Button onClick={props.refresh} className="mt-1" variant="primary">Weekly overview</Button>
+            </div>
+            <Accordion>
+                {content}
+            </Accordion>
+        </>
     )
 }
