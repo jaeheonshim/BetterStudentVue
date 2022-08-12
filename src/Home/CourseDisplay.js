@@ -5,7 +5,7 @@ import GradeSummary from "./GradeSummary";
 
 export default function CourseDisplay(props) {
     return (
-        <div>
+        <div className="pb-5">
             <div className="d-flex gap-2">
                 <Button onClick={props.onClose} variant="secondary" className="mb-2" size="md"><FontAwesomeIcon icon="fa-solid fa-angle-left" /></Button>
                 <GradeSummary Period={props.Course.Period} Title={props.Course.Title} Room={props.Course.Room} Staff={props.Course.Staff} CalculatedScoreString={props.Mark.CalculatedScoreString} />

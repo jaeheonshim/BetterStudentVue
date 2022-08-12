@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../App";
 import { getGradebook } from "../data/Gradebook";
-import GradebookWidget from "./GradebookWidget";
+import GradebookWidget from "../Home/GradebookWidget";
 import { useNavigate } from "react-router-dom";
-import CourseDisplay from "./CourseDisplay";
+import CourseDisplay from "../Home/CourseDisplay";
+import { Button } from "react-bootstrap";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -28,13 +29,26 @@ export default function Home() {
         });
     };
 
+    const logout = () => {
+        setAppState({});
+        navigate("/login");
+    }
+
     useEffect(() => {
         updateGradebookState();
     }, []);
 
     return (
+        <>
+        <nav className="navbar navbar-dark bg-dark px-3">
+            <a className="navbar-brand" href="#">
+                Home
+                <div style={{fontSize: "0.55em"}}>BSV - BetterStudentVue</div>
+            </a>
+            <Button onClick={logout} variant="outline-primary">Logout</Button>
+        </nav>
         <div className="container">
-            <h1>Welcome, {appState.name}</h1>
+            <h1 className="mt-3">Welcome, {appState.name}</h1>
             {appState.gradebook && !openedData && 
                 <GradebookWidget gradebook={appState.gradebook} openCourse={openCourse} />
             }
@@ -43,5 +57,6 @@ export default function Home() {
                 <CourseDisplay Course={openedData.course} Mark={openedData.mark} onClose={closeCourse} />
             }
         </div>
+        </>
     )
 }
