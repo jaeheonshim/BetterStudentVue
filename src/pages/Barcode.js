@@ -12,7 +12,7 @@ export default function Barcode() {
     const navigate = useNavigate();
     const { appState, setAppState } = useContext(AppContext);
 
-    const [studentData, setStudentData] = useState();
+    const [studentData, setStudentData] = useState(appState.studentInfo);
     const [studentInfo, setStudentInfo] = useState({
         id: undefined,
         name: undefined, 
@@ -34,7 +34,8 @@ export default function Barcode() {
             id: appState.id,
             name: studentData.name,
             school: studentData.school,
-            grade: studentData.grade
+            grade: studentData.grade,
+            photo: studentData.photo
         });
     }, [studentData]);
 
@@ -55,7 +56,7 @@ export default function Barcode() {
             <div className="contents">
                 <div className="image">
                     <div className="image-cropper">
-                        <img src={photo} />
+                        <img src={"data:image/png;base64," + studentInfo.photo} />
                     </div>
                 </div>
                 <div className="barcode">
