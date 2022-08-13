@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../App";
 import IDBarcode from "../components/IDBarcode";
+import { getStudentInfo } from "../data/Gradebook";
 import "./Barcode.css";
 import photo from "./photo.PNG";
 
@@ -11,6 +12,7 @@ export default function Barcode() {
     const navigate = useNavigate();
     const { appState, setAppState } = useContext(AppContext);
 
+    const [studentData, setStudentData] = useState();
     const [studentInfo, setStudentInfo] = useState({
         id: undefined,
         name: undefined, 
@@ -19,14 +21,22 @@ export default function Barcode() {
     });
 
     useEffect(() => {
+        getStudentInfo(appState.id, appState.password).then((data) => {
+            setStudentData(data);
+            setAppState({...appState, studentInfo: data});
+        });
+    }, []);
+
+    useEffect(() => {
+        if(!studentData) return;
+
         setStudentInfo({
             id: appState.id,
-            name: appState.studentInfo && appState.studentInfo.name,
-            school: appState.studentInfo && appState.studentInfo.school,
-            grade: appState.studentInfo && appState.studentInfo.grade
+            name: studentData.name,
+            school: studentData.school,
+            grade: studentData.grade
         });
-        console.log(appState.studentInfo);
-    }, [appState]);
+    }, [studentData]);
 
     const goHome = () => {
         navigate("/");
@@ -51,8 +61,8 @@ export default function Barcode() {
                 <div className="barcode">
                     <p>Swipe anywhere to change QRCode/Barcode</p>
                     <div className="barcode-container">
-                        <IDBarcode id="202012482" />
-                        <p className="barcode-text">202012482</p>
+                        <IDBarcode id={studentInfo.id} />
+                        <p className="barcode-text">{studentInfo.id}</p>
                     </div>
                 </div>
 
