@@ -19,13 +19,10 @@ export default function Home() {
 
     const updateGradebookState = () => {
         getGradebook(appState.id, appState.password).then((data) => {
-            setAppState({...appState, gradebook: data});
+            getStudentInfo(appState.id, appState.password).then((studentData) => {
+                setAppState({...appState, gradebook: data, studentInfo: studentData});
+            });
         });
-
-        getStudentInfo(appState.id, appState.password).then((data) => {
-            setAppState({...appState, studentInfo: data});
-            console.log(data);
-        })
     }
 
     const closeCourse = () => {

@@ -25,6 +25,7 @@ export default function Barcode() {
             school: appState.studentInfo && appState.studentInfo.school,
             grade: appState.studentInfo && appState.studentInfo.grade
         });
+        console.log(appState.studentInfo);
     }, [appState]);
 
     const goHome = () => {
