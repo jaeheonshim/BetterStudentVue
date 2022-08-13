@@ -6,6 +6,7 @@ import ScheduleTable from "../Schedule/ScheduleTable";
 import { Button, Modal } from "react-bootstrap";
 import { useInterval } from "../util/hooks";
 import Header from "../Header";
+import Footer from "../Footer";
 
 const DEMO_SCHEDULE = [
     {
@@ -195,6 +196,7 @@ export default function Schedule() {
                 <Button onClick={openSyncModal}>Synchronize Clock</Button>
             </div>
         </div>
+        <Footer />
         </>
     );
 }

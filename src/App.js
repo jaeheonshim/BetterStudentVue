@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Footer from './Footer';
 import Schedule from './pages/Schedule';
 import Header from './Header';
+import Barcode from './pages/Barcode';
 
 export const AppContext = createContext();
 
@@ -22,9 +23,9 @@ function App() {
         <Routes>
           <Route path="/login" element={appState.id || appState.password ? <Navigate to="/" /> : <Login />} />
           <Route path="/schedule" element={<Schedule />} />
+          <Route path="/barcode" element={<Barcode />} />
           <Route path="/" element={!appState.id || !appState.password ? <Navigate to="/login" /> : <Home />} />
         </Routes>
-        <Footer />
       </BrowserRouter>
     </AppContext.Provider>
   );

@@ -1,12 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../App";
-import { getGradebook } from "../data/Gradebook";
+import { getGradebook, getStudentInfo } from "../data/Gradebook";
 import GradebookWidget from "../Home/GradebookWidget";
 import { useNavigate } from "react-router-dom";
 import CourseDisplay from "../Home/CourseDisplay";
 import { Button, Spinner } from "react-bootstrap";
 import Header from "../Header";
 import WeeklyOverview from "../Home/WeeklyOverview";
+import IDBarcode from "../components/IDBarcode";
+import Footer from "../Footer";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -19,6 +21,11 @@ export default function Home() {
         getGradebook(appState.id, appState.password).then((data) => {
             setAppState({...appState, gradebook: data});
         });
+
+        getStudentInfo(appState.id, appState.password).then((data) => {
+            setAppState({...appState, studentInfo: data});
+            console.log(data);
+        })
     }
 
     const closeCourse = () => {
@@ -74,6 +81,7 @@ export default function Home() {
                 <WeeklyOverview onClose={hideWeekly} gradebook={appState.gradebook} />
             }
         </div>
+        <Footer />
         </>
     )
 }

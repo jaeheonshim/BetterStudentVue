@@ -22,7 +22,6 @@ export function getServerStatus() {
                     reject(1);
                }
           }).catch(error => {
-               console.log(error);
                reject(2);
           });
      });
@@ -72,10 +71,13 @@ export function getStudentInfo(username, password) {
             const parser = new DOMParser();
 
             try {
-                const xmlDoc = parser.parseFromString(formatData, "text/xml").getElementsByTagName("ChildList")[0];
-        
+                const xmlDoc = parser.parseFromString(formatData, "text/xml").getElementsByTagName("Child")[0];
+
                 const studentInfo = {
-                    name: xmlDoc.getAttribute("UserFormattedName")
+                    name: xmlDoc.getElementsByTagName("ChildName")[0].innerHTML,
+                    school: xmlDoc.getElementsByTagName("OrganizationName")[0].innerHTML,
+                    grade: xmlDoc.getElementsByTagName("Grade")[0].innerHTML,
+                    photo: xmlDoc.getElementsByTagName("photo")[0].innerHTML
                 }
 
                 resolve(studentInfo);
