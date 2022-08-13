@@ -13,6 +13,7 @@ export function getServerStatus() {
                headers: {
                    "Content-Type": "text/xml"
                },
+               timeout: 2000,
                data: TEST_TEMPLATE
           }).then(response => {
                if(response.data.includes("ProcessWebServiceRequestMultiWebResponse")) {

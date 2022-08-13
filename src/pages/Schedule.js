@@ -5,6 +5,7 @@ import { getSchedule } from "../data/Gradebook";
 import ScheduleTable from "../Schedule/ScheduleTable";
 import { Button, Modal } from "react-bootstrap";
 import { useInterval } from "../util/hooks";
+import Header from "../Header";
 
 const DEMO_SCHEDULE = [
     {
@@ -186,6 +187,7 @@ export default function Schedule() {
                 </div>
             </Modal.Body>
         </Modal>
+        <Header title="Schedule" />
         <div className="container pt-3">
             <ScheduleTimer timeTitle={(currentTimeBlock && !currentTimeBlock.isBreak && currentTimeBlock.period && currentTimeBlock.period + ": " + currentTimeBlock.title) || (currentTimeBlock && currentTimeBlock.isBreak && ("Break " + currentTimeBlock.title))} elapsedTime={elapsedTime} elapsedPercentage={elapsedPercentage} remainingTime={remainingTime} />
             <ScheduleTable schedule={schedule} />

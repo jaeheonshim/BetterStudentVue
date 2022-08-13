@@ -18,7 +18,7 @@ function App() {
 
   return (
     <AppContext.Provider value={{appState: appState, setAppState: setAppState}}>
-      <BrowserRouter basemname={`/${process.env.PUBLIC_URL}`}>
+      <BrowserRouter basename={`/${process.env.PUBLIC_URL}`}>
         <Routes>
           <Route path="/login" element={appState.id || appState.password ? <Navigate to="/" /> : <Login />} />
           <Route path="/schedule" element={<Schedule />} />
