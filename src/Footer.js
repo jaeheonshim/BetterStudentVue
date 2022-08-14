@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import GitInfo from 'react-git-info/macro';
+import { Link } from 'react-router-dom';
 import VUEStatus from './components/VUEStatus';
 import { getServerStatus } from './data/Gradebook';
 
@@ -12,7 +13,7 @@ export default function Footer() {
         <div className="text-center p-4 border-top mt-5">
             <VUEStatus />
             <br />
-            BSV (BetterStudentVue)
+            <b>The information on this website is provided "as is". <Link to="/disclaimer">Disclaimer.</Link></b>
             <br />
             <a href="https://github.com/jaeheonshim/BetterStudentVue">Open source</a> under the MIT license
             <br />
