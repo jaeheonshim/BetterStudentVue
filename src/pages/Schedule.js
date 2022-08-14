@@ -54,7 +54,7 @@ const DEMO_SCHEDULE = [
 ];
 
 function elapsed(start, end) {
-    if(end > start) return end - start;
+    if(end >= start) return end - start;
     else return (24 * 60 * 60) - start + end;
 }
 
@@ -104,7 +104,7 @@ export default function Schedule() {
                 return {
                     period: "Break",
                     title: "(Next: " + schedule[i].title + ")",
-                    start: 0,
+                    start: schedule[i - 1].end,
                     end: schedule[i].start,
                     isBreak: true
                 }
