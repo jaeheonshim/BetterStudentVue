@@ -51,7 +51,12 @@ const DEMO_SCHEDULE = [
         start: 47820,
         end: 51000
     }
-]
+];
+
+function elapsed(start, end) {
+    if(end > start) return end - start;
+    else return (24 * 60 * 60) - start + end;
+}
 
 export default function Schedule() {
     const { appState, setAppState } = useContext(AppContext);
@@ -85,6 +90,8 @@ export default function Schedule() {
     }
 
     function getCurrentTimeBlock(seconds) {
+        if(!schedule || schedule.length < 1) return null;
+
         for(const tb of schedule) {
             if(seconds >= tb.start && seconds <= tb.end) {
                 return tb;
@@ -97,14 +104,28 @@ export default function Schedule() {
                 return {
                     period: "Break",
                     title: "(Next: " + schedule[i].title + ")",
-                    start: schedule[i - 1].end,
+                    start: 0,
                     end: schedule[i].start,
                     isBreak: true
                 }
             }
-        }        
+        }
 
-        return null;
+        let lastNonTrivial = schedule[schedule.length - 1];
+        for(let i = schedule.length - 1; i >= 0; --i) {
+            if(schedule[i].end - schedule[i].start > 0) {
+                lastNonTrivial = schedule[i];
+                break;
+            }
+        }
+
+        return {
+            period: "School not in session",
+            title: "(Next: " + schedule[0].title + ")",
+            start: lastNonTrivial.end,
+            end: schedule[0].start,
+            isBreak: true
+        }
     }
 
     function updateTime() {
@@ -122,16 +143,16 @@ export default function Schedule() {
         }
 
         setCurrentTimeBlock(currentTimeBlock);
-        setRemainingTime(currentTimeBlock.end - time);
-        setElapsedTime(time - currentTimeBlock.start);
-        setElapsedPercentage(Math.round((time - currentTimeBlock.start) / (currentTimeBlock.end - currentTimeBlock.start) * 100));
+        setRemainingTime(elapsed(time, currentTimeBlock.end));
+        setElapsedTime(elapsed(currentTimeBlock.start, time));
+        setElapsedPercentage(Math.round(elapsed(currentTimeBlock.start, time) / elapsed(currentTimeBlock.start, currentTimeBlock.end) * 100));
     }, [time]);
 
     useEffect(() => {
         if(appState.id && appState.password) {
-            getSchedule(appState.id, appState.password).then(schedule => {
-                setSchedule(schedule);
-                setAppState({...appState, schedule: schedule});
+            getSchedule(appState.id, appState.password).then(s => {
+                setSchedule(s);
+                setAppState({...appState, schedule: s});
             });
         }
     }, []);

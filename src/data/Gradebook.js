@@ -2,7 +2,7 @@ import axios from "axios";
 import { hhMMToSeconds, unescapeHtml } from "../util/textUtil";
 
 const applicationEndpoint = "https://apps.gwinnett.k12.ga.us/sismobile/spvue";
-const BODY_TEMPLATE = "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ProcessWebServiceRequest xmlns=\"http://edupoint.com/webservices/\"><userID>{user}</userID><password>{pass}</password><skipLoginLog>1</skipLoginLog><parent>0</parent><webServiceHandleName>PXPWebServices</webServiceHandleName><methodName>{method}</methodName><paramStr>&lt;Parms&gt;&lt;ChildIntID&gt;0&lt;/ChildIntID&gt;&lt;/Parms&gt;</paramStr></ProcessWebServiceRequest></soap:Body></soap:Envelope>";
+const BODY_TEMPLATE = "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ProcessWebServiceRequest xmlns=\"http://edupoint.com/webservices/\"><userID>{user}</userID><password>{pass}</password><skipLoginLog>true</skipLoginLog><parent>false</parent><webServiceHandleName>PXPWebServices</webServiceHandleName><methodName>{method}</methodName><paramStr>&lt;Parms&gt;&lt;ChildIntID&gt;0&lt;/ChildIntID&gt;&lt;/Parms&gt;</paramStr></ProcessWebServiceRequest></soap:Body></soap:Envelope>";
 const TEST_TEMPLATE = `<v:Envelope xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d="http://www.w3.org/2001/XMLSchema" xmlns:c="http://schemas.xmlsoap.org/soap/encoding/" xmlns:v="http://schemas.xmlsoap.org/soap/envelope/"> <v:Header /> <v:Body> <ProcessWebServiceRequestMultiWeb xmlns="http://edupoint.com/webservices/" id="o0" c:root="1"> <userID i:type="d:string"> </userID> <password i:type="d:string"> </password> <skipLoginLog i:type="d:string"> true </skipLoginLog> <parent i:type="d:string"> false </parent> <webServiceHandleName i:type="d:string"> PXPWebServices </webServiceHandleName> <methodName i:type="d:string"> GETSAMLSTATUS </methodName> <paramStr i:type="d:string"> </paramStr> <webDBName i:type="d:string"> </webDBName> </ProcessWebServiceRequestMultiWeb> </v:Body> </v:Envelope>`;
 
 export function getServerStatus() {
@@ -27,7 +27,7 @@ export function getServerStatus() {
      });
 }
 
-export function getSchedule(username, password) {
+export function getSchedule(username, password, depth=0) {
     return new Promise((resolve, reject) => {
         axios({
             method: "post",
@@ -42,6 +42,20 @@ export function getSchedule(username, password) {
 
             const xmlDoc = parser.parseFromString(formatData, "text/xml");
             const schedule = [];
+
+            if(xmlDoc.getElementsByTagName("ClassInfo").length < 1) {
+                if(depth >= 10) {
+                    // give up after 10 tries
+                    reject("Failed to retrieve schedule");
+                    return;
+                }
+
+                // what the fuck is StudentVue server doing
+                // like this is some next level fucked up shit
+                console.log("Failed to retrieve schedule. Retrying...");
+                getSchedule(username, password, depth + 1).then(resolve, reject);
+                return;
+            }
 
             for(const classInfoDOM of xmlDoc.getElementsByTagName("ClassInfo")) {
                 schedule.push({
