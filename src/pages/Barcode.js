@@ -6,7 +6,6 @@ import { AppContext } from "../App";
 import IDBarcode from "../components/IDBarcode";
 import { getStudentInfo } from "../data/Gradebook";
 import "./Barcode.css";
-import photo from "./photo.PNG";
 
 export default function Barcode() {
     const navigate = useNavigate();

@@ -1,9 +1,10 @@
 import { useContext } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { AppContext } from "./App";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Header(props) {
+    const location = useLocation();
     const navigate = useNavigate();
     const { appState, setAppState } = useContext(AppContext);
 
@@ -13,14 +14,22 @@ export default function Header(props) {
     }
 
     return (
-        <nav className="navbar navbar-dark bg-dark px-3">
-            <a className="navbar-brand" href="/">
-                {props.title}
-                <div style={{fontSize: "0.55em"}}>BSV - BetterStudentVue</div>
-            </a>
-            {appState.id &&
-                <Button onClick={logout} variant="outline-primary">Logout</Button>
-            }
-        </nav>
+        <Navbar expand="lg" bg="dark" variant="dark">
+            <Container>
+                <Navbar.Brand href="/">
+                    BSV - BetterStudentVue
+                </Navbar.Brand>
+                <Navbar.Toggle aria-controls="navbarScroll" />
+                <Navbar.Collapse id="navbarScroll">
+                    <Nav className="me-auto">
+                        <Nav.Link href="/" active={location.pathname == "/"}>Gradebook</Nav.Link>
+                        <Nav.Link href="/schedule" active={location.pathname == "/schedule"}>Schedule</Nav.Link>
+                    </Nav>
+                    {appState.id &&
+                        <Button onClick={logout} variant="outline-primary">Logout</Button>
+                    }
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
     )
 }
