@@ -168,7 +168,7 @@ export default function Schedule() {
 
         bellTimes.sort((a, b) => Math.abs(a - (time - (appState.timeOffset || 0))) - Math.abs(b - (time - (appState.timeOffset || 0))));
         
-        const delta = bellTimes[0] - time;
+        const delta = bellTimes[0] - (time - (appState.timeOffset || 0));
         setAppState({...appState, timeOffset: delta});
         return delta;
     }
