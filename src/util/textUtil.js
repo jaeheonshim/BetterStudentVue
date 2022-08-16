@@ -7,6 +7,15 @@ export function unescapeHtml(escaped) {
         .replace("&#039;", "'");
 }
 
+export function escapeXML(unsafe) { 
+    return unsafe
+         .replace(/&/g, "&#38;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+ }
+
 export const toHHMMSS = (secs) => {
     var sec_num = parseInt(secs, 10)
     var hours   = Math.floor(sec_num / 3600)

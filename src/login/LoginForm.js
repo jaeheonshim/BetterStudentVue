@@ -2,7 +2,7 @@ import { Button, Modal, Card, Form } from "react-bootstrap";
 import { useContext, useState } from "react";
 import "../data/Gradebook";
 import { getStudentInfo } from "../data/Gradebook"
-import { AppContext } from "../App";
+import { AppContext, DebugContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import dataflow from "./dataflow.png";
 
@@ -10,6 +10,7 @@ export default function LoginForm() {
     const navigate = useNavigate();
 
     const { appState, setAppState } = useContext(AppContext);
+    const { debugState, setDebugState } = useContext(DebugContext);
 
     const [loginFormInfo, setLoginFormInfo] = useState({
         id: "",
@@ -25,7 +26,7 @@ export default function LoginForm() {
     const handleOpen = () => setShowModal(true);
 
     const handleChange = (event) => {
-        setLoginFormInfo({...loginFormInfo, [event.target.name]: event.target.value})
+        setLoginFormInfo({...loginFormInfo, [event.target.name]:  event.target.value})
     }
 
     const onSubmit = (event) => {
@@ -38,7 +39,12 @@ export default function LoginForm() {
             setName(data.name);
             handleOpen();
         }).catch((error) => {
-            setErrorText("Error logging in. Ensure that your credentials were entered correctly.");
+            let errorText = error.message;
+            if(debugState.debug) {
+                errorText += ` ${error.error.name}: ${error.error.message}`;
+            }
+
+            setErrorText(errorText);
         }).finally(() => {
             setSubmitDisabled(false);
         });

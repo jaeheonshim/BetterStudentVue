@@ -1,5 +1,5 @@
 import axios from "axios";
-import { hhMMToSeconds, unescapeHtml } from "../util/textUtil";
+import { escapeXML, hhMMToSeconds, unescapeHtml } from "../util/textUtil";
 
 const applicationEndpoint = "https://apps.gwinnett.k12.ga.us/sismobile/spvue";
 const BODY_TEMPLATE = "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ProcessWebServiceRequest xmlns=\"http://edupoint.com/webservices/\"><userID>{user}</userID><password>{pass}</password><skipLoginLog>true</skipLoginLog><parent>false</parent><webServiceHandleName>PXPWebServices</webServiceHandleName><methodName>{method}</methodName><paramStr>&lt;Parms&gt;&lt;ChildIntID&gt;0&lt;/ChildIntID&gt;&lt;/Parms&gt;</paramStr></ProcessWebServiceRequest></soap:Body></soap:Envelope>";
@@ -28,6 +28,7 @@ export function getServerStatus() {
 }
 
 export function getSchedule(username, password, depth=0) {
+    password = escapeXML(password);
     return new Promise((resolve, reject) => {
         axios({
             method: "post",
@@ -72,6 +73,7 @@ export function getSchedule(username, password, depth=0) {
 }
 
 export function getStudentInfo(username, password) {
+    password = escapeXML(password);
     return new Promise((resolve, reject) => {
         axios({
             method: 'post',
@@ -96,13 +98,22 @@ export function getStudentInfo(username, password) {
 
                 resolve(studentInfo);
             } catch(exception) {
-                reject(exception);
+                reject({
+                    message: "Error logging in. Ensure that your credentials were entered correctly.",
+                    error: exception
+                });
             }
+        }).catch((exception) => {
+            reject({
+                message: "Sorry, a network error occurred. Please try again later.",
+                error: exception
+            });
         });
     });
 }
 
 export function getGradebook(username, password) {
+    password = escapeXML(password);
     return new Promise((resolve, reject) => {
         axios({
             method: 'post',
