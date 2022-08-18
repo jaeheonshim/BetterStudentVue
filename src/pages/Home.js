@@ -9,6 +9,7 @@ import Header from "../Header";
 import WeeklyOverview from "../Home/WeeklyOverview";
 import IDBarcode from "../components/IDBarcode";
 import Footer from "../Footer";
+import PageVisibility from "react-page-visibility";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -16,13 +17,21 @@ export default function Home() {
     
     const [ openedData, setOpenedData ] = useState();
     const [ showWeekly, setShowWeekly ] = useState(false);
+    const [ updatingGradebook, setUpdatingGradebook ] = useState(false);
 
     const updateGradebookState = () => {
+        setUpdatingGradebook(true);
+
         getGradebook(appState.id, appState.password).then((data) => {
             getStudentInfo(appState.id, appState.password).then((studentData) => {
-                setAppState({...appState, gradebook: data, studentInfo: studentData});
+                setAppState({...appState, gradebook: data, studentInfo: studentData, lastUpdate: new Date().getTime()});
+                setUpdatingGradebook(false);
             });
         });
+    }
+
+    const secondsSinceUpdate = () => {
+        return (new Date().getTime() - (appState.lastUpdate || 0)) / 1000;
     }
 
     const closeCourse = () => {
@@ -37,8 +46,6 @@ export default function Home() {
     };
 
     const refresh = () => {
-        const {gradebook, ...newAppstate} = appState;
-        setAppState(newAppstate);
         updateGradebookState();
     }
 
@@ -50,35 +57,45 @@ export default function Home() {
         setShowWeekly(false);
     }
 
+    const handleVisibilityChange = isVisible => {
+        if(isVisible) {
+            if(secondsSinceUpdate() >= 2 * 60) {
+                updateGradebookState();
+            }
+        }
+    }
+
     useEffect(() => {
         updateGradebookState();
     }, []);
 
     return (
-        <>
-        <Header title="Gradebook" />
-        <div className="container">
-            <h1 className="mt-3">Welcome, {appState.name}</h1>
+        <PageVisibility onChange={handleVisibilityChange}>
+            <>
+            <Header title="Gradebook" />
+            <div className="container">
+                <h1 className="mt-3">Welcome, {appState.name}</h1>
 
-            {appState.gradebook && !openedData && !showWeekly && 
-                <GradebookWidget refresh={refresh} showWeekly={openWeekly} gradebook={appState.gradebook} openCourse={openCourse} />
-            }
+                {appState.gradebook && !openedData && !showWeekly && 
+                    <GradebookWidget lastUpdate={new Date().getTime() - (appState.lastUpdate)} updating={updatingGradebook} refresh={refresh} showWeekly={openWeekly} gradebook={appState.gradebook} openCourse={openCourse} />
+                }
 
-            {!appState.gradebook && 
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
-            }
-            
-            {openedData && !showWeekly &&
-                <CourseDisplay Course={openedData.course} Mark={openedData.mark} onClose={closeCourse} />
-            }
+                {!appState.gradebook && 
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                }
+                
+                {openedData && !showWeekly &&
+                    <CourseDisplay Course={openedData.course} Mark={openedData.mark} onClose={closeCourse} />
+                }
 
-            {showWeekly &&
-                <WeeklyOverview onClose={hideWeekly} gradebook={appState.gradebook} />
-            }
-        </div>
-        <Footer />
-        </>
+                {showWeekly &&
+                    <WeeklyOverview onClose={hideWeekly} gradebook={appState.gradebook} />
+                }
+            </div>
+            <Footer />
+            </>
+        </PageVisibility>
     )
 }

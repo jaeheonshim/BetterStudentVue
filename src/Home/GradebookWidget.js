@@ -24,7 +24,7 @@ export default function GradebookWidget(props) {
     return (
         <>
             <div className="d-grid mb-2">
-                <Button onClick={props.refresh} variant="outline-secondary">Refresh Gradebook</Button>
+                <Button onClick={props.refresh} variant="outline-secondary" disabled={props.updating}>{props.updating ? "Updating gradebook..." : "Refresh Gradebook (Last updated " + Math.round(props.lastUpdate / 1000) + " seconds ago)"}</Button>
                 <Button onClick={props.showWeekly} className="mt-1" variant="primary">Weekly overview</Button>
             </div>
             <Accordion>
