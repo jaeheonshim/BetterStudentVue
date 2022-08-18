@@ -2,8 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { getServerStatus } from "../data/Gradebook";
+import { useOnlineStatus } from "../util/OnlineStatusProvider";
 
 export default function VUEStatus() {
+    const isOnline = useOnlineStatus();
+
     const [ stateColor, setStateColor ] = useState("#808080");
     const [ stateText, setStateText ] = useState("Checking StudentVue server...");
 
@@ -22,7 +25,7 @@ export default function VUEStatus() {
                 setStateText("StudentVue server is malfunctioning");
             }
         })
-    }, []);
+    }, [isOnline]);
 
     return (
         <Card style={{width: "20rem", marginLeft: "auto", marginRight: "auto"}}>

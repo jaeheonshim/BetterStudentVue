@@ -1,6 +1,6 @@
 {
   "short_name": "BetterStudentVue",
-  "name": "Web app for accessing a StudentVue server",
+  "name": "BetterStudentVue (BSV)",
   "icons": [
     {
       "src": "favicon.ico",

@@ -1,11 +1,13 @@
 import { useContext } from "react";
-import { Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Button, Container, Nav, Navbar, NavDropdown, Badge } from "react-bootstrap";
 import { AppContext } from "./App";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useOnlineStatus } from "./util/OnlineStatusProvider";
 
 export default function Header(props) {
     const location = useLocation();
     const navigate = useNavigate();
+    const isOnline = useOnlineStatus();
     const { appState, setAppState } = useContext(AppContext);
 
     const logout = () => {
@@ -18,6 +20,7 @@ export default function Header(props) {
             <Container>
                 <Navbar.Brand href="/">
                     BSV - BetterStudentVue
+                    { !isOnline && <div style={{fontSize: "0.65em", margin: 0}}><Badge bg="warning">Offline mode</Badge></div> }
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">

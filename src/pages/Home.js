@@ -10,9 +10,12 @@ import WeeklyOverview from "../Home/WeeklyOverview";
 import IDBarcode from "../components/IDBarcode";
 import Footer from "../Footer";
 import PageVisibility from "react-page-visibility";
+import { useOnlineStatus } from "../util/OnlineStatusProvider";
 
 export default function Home() {
     const navigate = useNavigate();
+    const isOnline = useOnlineStatus();
+
     const { appState, setAppState } = useContext(AppContext);
     
     const [ openedData, setOpenedData ] = useState();
@@ -20,6 +23,7 @@ export default function Home() {
     const [ updatingGradebook, setUpdatingGradebook ] = useState(false);
 
     const updateGradebookState = () => {
+        console.log("Updating gradebook...");
         setUpdatingGradebook(true);
 
         getGradebook(appState.id, appState.password).then((data) => {
@@ -66,8 +70,10 @@ export default function Home() {
     }
 
     useEffect(() => {
-        updateGradebookState();
-    }, []);
+        if(isOnline) {
+            updateGradebookState();
+        }
+    }, [isOnline]);
 
     return (
         <PageVisibility onChange={handleVisibilityChange}>
