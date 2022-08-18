@@ -1,6 +1,6 @@
 {
   "short_name": "BetterStudentVue",
-  "name": "Web app for accessing a StudentVue server",
+  "name": "BetterStudentVue (BSV)",
   "icons": [
     {
       "src": "favicon.ico",
@@ -16,6 +16,5 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff",
-  "gcm_sender_id": "103953800507"
+  "background_color": "#ffffff"
 }

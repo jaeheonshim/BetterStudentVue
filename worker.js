@@ -1,6 +1,8 @@
 var CACHE_NAME = 'better-studentvue';
 var urlsToCache = [
-  '/'
+  '/',
+  '/schedule',
+  '/barcode'
 ];
 
 self.addEventListener('install', event => {

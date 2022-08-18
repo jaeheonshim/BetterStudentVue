@@ -16,6 +16,12 @@ firebase.initializeApp(firebaseConfig)
 
 const messaging = firebase.messaging()
 
+messaging.getToken({vapidKey: "BA7g6yTATnNwE_iwv3m5C9san4ZPCo7SD3_hiQK0j4sNpxHnsuPPZ6Xvgvz6ublEeB7TpI3-RIuhRvKi5NNlYw4"}).then((currentToken) => {
+  console.log(currentToken);
+}).catch(error => {
+  console.log(error);
+})
+
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload)
   const notificationTitle = payload.notification.title
