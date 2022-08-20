@@ -11,6 +11,7 @@ import IDBarcode from "../components/IDBarcode";
 import Footer from "../Footer";
 import PageVisibility from "react-page-visibility";
 import { useOnlineStatus } from "../util/OnlineStatusProvider";
+import MotivationalQuote from "../components/MotivationalQuote";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -99,6 +100,8 @@ export default function Home() {
                 {showWeekly &&
                     <WeeklyOverview onClose={hideWeekly} gradebook={appState.gradebook} />
                 }
+
+                <MotivationalQuote className="mt-2" />
             </div>
             <Footer />
             </>
