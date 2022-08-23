@@ -53,6 +53,7 @@ export default function Home() {
 
     const closeCourse = () => {
         setOpenedData();
+        setEdit(false);
     }
 
     const openCourse = (course, markIndex) => {
