@@ -23,6 +23,10 @@ export default function Home() {
     const [ showWeekly, setShowWeekly ] = useState(false);
     const [ updatingGradebook, setUpdatingGradebook ] = useState(false);
 
+    const [ edit, setEdit ] = useState(true);
+
+    const toggleEdit = () => setEdit(!edit);
+
     const updateGradebookState = () => {
         console.log("Updating gradebook...");
         setUpdatingGradebook(true);
@@ -94,7 +98,7 @@ export default function Home() {
                 }
                 
                 {openedData && !showWeekly &&
-                    <CourseDisplay Course={openedData.course} Mark={openedData.mark} onClose={closeCourse} />
+                    <CourseDisplay toggleEdit={toggleEdit} edit={edit} Course={openedData.course} Mark={openedData.mark} onClose={closeCourse} />
                 }
 
                 {showWeekly &&
