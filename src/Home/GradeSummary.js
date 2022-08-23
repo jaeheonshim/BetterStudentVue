@@ -12,7 +12,7 @@ export default function GradeSummary(props) {
                         <Badge bg="secondary" style={{fontSize: "0.65em"}} className="me-2">{props.Staff}</Badge>
                     </Col>
                     <Col>
-                        <span className="display-6 fw-semibold float-end">{props.CalculatedScoreString}</span>
+                        <span className="display-6 fw-semibold float-end" style={{color: props.edit ? "var(--bs-primary)" : "black"}}>{props.CalculatedScoreString}</span>
                     </Col>
                 </Row>
             </Card.Body>

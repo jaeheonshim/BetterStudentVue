@@ -13,18 +13,12 @@ export default function WeeklyOverview(props) {
     let totalAssignments = [];
 
     for(const course of gradebook.courses) {
-        const calcSummary = {};
-
-        for(const calc of course.Marks[0].GradeCalculationSummary) {
-            calcSummary[calc.Type] = parseInt(calc.Weight) / 100.0;
-        }
-
         const weekAssignments = course.Marks[0].Assignments.filter((assignment) => {
             const dateParts = assignment.Date.split("/");
             const date = new Date(dateParts[2], dateParts[0] - 1, dateParts[1]);
             assignment.course = course.Title;
             assignment.jsDate = date;
-            assignment.weight = calcSummary[assignment.Type] || 0;
+            assignment.weight = course.calcSummary[assignment.Type] || 0;
             assignment.numScore = /^\+?(0|[1-9]\d*)$/.test(assignment.Score.split(" ")[0]) ? parseInt(assignment.Score.split(" ")[0]) : -1;
             return (date >= startDate && date <= endDate);
         });

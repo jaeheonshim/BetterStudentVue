@@ -1,6 +1,14 @@
 import { Row, Col } from "react-bootstrap"
+import { useForceUpdate } from "../util/hooks";
 
 export default function Assignment(props) {
+    const forceUpdate = useForceUpdate();
+
+    const onEditChange = (e) => {
+        props.assignment.modifiedScore = e.target.value;
+        props.forceUpdate();
+    }
+
     return (
         <div>
             <Row>
@@ -10,7 +18,7 @@ export default function Assignment(props) {
                 </Col>
                 <Col>
                     {props.edit ? 
-                        <input type="number" className="float-end" style={{width: "5em"}} /> :
+                        <input type="number" className="float-end" style={{width: "5em"}} onChange={onEditChange} value={props.assignment.modifiedScore} /> :
                         <span className="display-6 float-end">{/^\+?(0|[1-9]\d*)$/.test(props.Score.split(" ")[0]) ? props.Score.split(" ")[0] : "--"}</span>
                     }
                 </Col>

@@ -23,7 +23,7 @@ export default function Home() {
     const [ showWeekly, setShowWeekly ] = useState(false);
     const [ updatingGradebook, setUpdatingGradebook ] = useState(false);
 
-    const [ edit, setEdit ] = useState(true);
+    const [ edit, setEdit ] = useState(false);
 
     const toggleEdit = () => setEdit(!edit);
 
@@ -33,6 +33,14 @@ export default function Home() {
 
         getGradebook(appState.id, appState.password).then((data) => {
             getStudentInfo(appState.id, appState.password).then((studentData) => {
+                for(const course of data.courses) {
+                    course.calcSummary = {};
+            
+                    for(const calc of course.Marks[0].GradeCalculationSummary) {
+                        course.calcSummary[calc.Type] = parseInt(calc.Weight) / 100.0;
+                    }
+                }
+
                 setAppState({...appState, gradebook: data, studentInfo: studentData, lastUpdate: new Date().getTime()});
                 setUpdatingGradebook(false);
             });
@@ -48,6 +56,10 @@ export default function Home() {
     }
 
     const openCourse = (course, markIndex) => {
+        for(const assignment of course.Marks[markIndex].Assignments) {
+            assignment.modifiedScore = /^\+?(0|[1-9]\d*)$/.test(assignment.Score.split(" ")[0]) ? parseInt(assignment.Score.split(" ")[0]) : -1;
+        }
+
         setOpenedData({
             course: course,
             mark: course.Marks[markIndex]
