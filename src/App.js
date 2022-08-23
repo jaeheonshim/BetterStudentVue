@@ -9,6 +9,7 @@ import Header from './Header';
 import Barcode from './pages/Barcode';
 import Disclaimer from './pages/Disclaimer';
 import { OnlineStatusProvider } from './util/OnlineStatusProvider';
+import About from './pages/About';
 
 export const AppContext = createContext();
 export const DebugContext = createContext();
@@ -33,6 +34,7 @@ function App() {
               <Route path="/disclaimer" element={<Disclaimer />} />
               <Route path="/schedule" element={<Schedule />} />
               <Route path="/barcode" element={<Barcode />} />
+              <Route path="/about" element={<About />} />
               <Route path="/" element={!appState.id || !appState.password ? <Navigate to="/login" /> : <Home />} />
             </Routes>
           </BrowserRouter>

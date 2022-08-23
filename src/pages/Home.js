@@ -100,8 +100,6 @@ export default function Home() {
                 {showWeekly &&
                     <WeeklyOverview onClose={hideWeekly} gradebook={appState.gradebook} />
                 }
-
-                <MotivationalQuote className="mt-2" />
             </div>
             <Footer />
             </>
