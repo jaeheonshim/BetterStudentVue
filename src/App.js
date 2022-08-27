@@ -10,6 +10,8 @@ import Barcode from './pages/Barcode';
 import Disclaimer from './pages/Disclaimer';
 import { OnlineStatusProvider } from './util/OnlineStatusProvider';
 import About from './pages/About';
+import TOS from './pages/TOS';
+import TOSModal from './components/TOSModal';
 
 export const AppContext = createContext();
 export const DebugContext = createContext();
@@ -29,9 +31,11 @@ function App() {
       <DebugContext.Provider value={{debugState: debugState, setDebugState: setDebugState}} >
         <AppContext.Provider value={{appState: appState, setAppState: setAppState}}>
           <BrowserRouter basename={`/${process.env.PUBLIC_URL}`}>
+            <TOSModal />
             <Routes>
               <Route path="/login" element={appState.id || appState.password ? <Navigate to="/" /> : <Login />} />
               <Route path="/disclaimer" element={<Disclaimer />} />
+              <Route path="/tos" element={<TOS />} />
               <Route path="/schedule" element={<Schedule />} />
               <Route path="/barcode" element={<Barcode />} />
               <Route path="/about" element={<About />} />
