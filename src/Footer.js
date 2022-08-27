@@ -26,7 +26,7 @@ export default function Footer() {
         <div className="text-center p-4 border-top mt-5">
             <VUEStatus />
             <br />
-            <b>The information on this website is provided "as is". <Link to="/disclaimer">Disclaimer.</Link></b>
+            <b>The information on this website is provided "as is". <Link to="/disclaimer">Disclaimer.</Link> <Link to="/tos">Terms of Service.</Link></b>
             <br />
             <a href="https://github.com/jaeheonshim/BetterStudentVue">Open source</a> under the MIT license
             <br />
