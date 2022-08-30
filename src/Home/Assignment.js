@@ -6,7 +6,7 @@ export default function Assignment(props) {
     const forceUpdate = useForceUpdate();
 
     const onEditChange = (e) => {
-        props.assignment.modifiedScore = e.target.value;
+        props.assignment.modifiedScore = e.target.value == "" ? -1 : e.target.value;
         props.forceUpdate();
     }
 
@@ -26,7 +26,7 @@ export default function Assignment(props) {
                     {props.edit ? 
                         <>
                             <Button onClick={reset} size="sm" variant="outline-secondary"><FontAwesomeIcon icon="fas fa-undo" /></Button>
-                            <input type="number" className="float-end" style={{width: "5em"}} onChange={onEditChange} value={props.assignment.modifiedScore} />
+                            <input type="number" className="float-end" style={{width: "5em"}} onChange={onEditChange} value={props.assignment.modifiedScore == -1 ? "" : props.assignment.modifiedScore} />
                         </> :
                         <div className="display-6 align-self-end">{/^\+?(0|[1-9]\d*)$/.test(props.Score.split(" ")[0]) ? props.Score.split(" ")[0] : "--"}</div>
                     }
