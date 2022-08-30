@@ -31,6 +31,10 @@ export default function CourseDisplay(props) {
         forceUpdate();
     }
 
+    useEffect(() => {
+        console.log(props.Mark.Assignments);
+    }, [props.Mark.Assignments]);
+
     return (
         <div className="pb-5">
             <div className="d-flex gap-2">
