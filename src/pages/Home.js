@@ -12,6 +12,7 @@ import Footer from "../Footer";
 import PageVisibility from "react-page-visibility";
 import { useOnlineStatus } from "../util/OnlineStatusProvider";
 import MotivationalQuote from "../components/MotivationalQuote";
+import { GRADE_MATCH } from "../Home/Assignment";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -58,7 +59,7 @@ export default function Home() {
 
     const openCourse = (course, markIndex) => {
         for(const assignment of course.Marks[markIndex].Assignments) {
-            assignment.modifiedScore = /^\+?(0|[1-9]\d*)$/.test(assignment.Score.split(" ")[0]) ? parseInt(assignment.Score.split(" ")[0]) : -1;
+            assignment.modifiedScore = GRADE_MATCH.test(assignment.Score.split(" ")[0]) ? parseInt(assignment.Score.split(" ")[0]) : -1;
         }
 
         setOpenedData({

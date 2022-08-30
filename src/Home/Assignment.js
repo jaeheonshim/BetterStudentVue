@@ -2,6 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Row, Col, Button } from "react-bootstrap"
 import { useForceUpdate } from "../util/hooks";
 
+export const GRADE_MATCH = /^\d*\.?\d*$/;
+
 export default function Assignment(props) {
     const forceUpdate = useForceUpdate();
 
@@ -11,7 +13,7 @@ export default function Assignment(props) {
     }
 
     const reset = () => {
-        props.assignment.modifiedScore = /^\+?(0|[1-9]\d*)$/.test(props.assignment.Score.split(" ")[0]) ? parseInt(props.assignment.Score.split(" ")[0]) : -1;
+        props.assignment.modifiedScore = GRADE_MATCH.test(props.assignment.Score.split(" ")[0]) ? parseInt(props.assignment.Score.split(" ")[0]) : -1;
         props.forceUpdate();
     }
 
@@ -30,7 +32,7 @@ export default function Assignment(props) {
                             <Button onClick={reset} size="sm" variant="outline-secondary"><FontAwesomeIcon icon="fas fa-undo" /></Button>
                             <input type="number" className="float-end" style={{width: "5em"}} onChange={onEditChange} value={props.assignment.modifiedScore == -1 ? "" : props.assignment.modifiedScore} />
                         </> :
-                        <div className="display-6 align-self-end">{/^\d*\.?\d*$/.test(props.Score.split(" ")[0]) ? props.Score.split(" ")[0] : "--"}</div>
+                        <div className="display-6 align-self-end">{GRADE_MATCH.test(props.Score.split(" ")[0]) ? props.Score.split(" ")[0] : "--"}</div>
                     }
                 </Col>
             </Row>

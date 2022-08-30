@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useForceUpdate } from "../util/hooks";
-import Assignment from "./Assignment";
+import Assignment, { GRADE_MATCH } from "./Assignment";
 import AssignmentList from "./AssignmentList";
 import GradeSummary from "./GradeSummary";
 
@@ -25,15 +25,11 @@ export default function CourseDisplay(props) {
 
     const resetAll = () => {
         for(const assignment of props.Mark.Assignments) {
-            assignment.modifiedScore = /^\+?(0|[1-9]\d*)$/.test(assignment.Score.split(" ")[0]) ? parseInt(assignment.Score.split(" ")[0]) : -1;
+            assignment.modifiedScore = GRADE_MATCH.test(assignment.Score.split(" ")[0]) ? parseInt(assignment.Score.split(" ")[0]) : -1;
         }
 
         forceUpdate();
     }
-
-    useEffect(() => {
-        console.log(props.Mark.Assignments);
-    }, [props.Mark.Assignments]);
 
     return (
         <div className="pb-5">

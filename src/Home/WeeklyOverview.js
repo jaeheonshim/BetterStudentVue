@@ -1,6 +1,7 @@
 import { Button, Card, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AssignmentList from "./AssignmentList";
+import { GRADE_MATCH } from "./Assignment";
 
 export default function WeeklyOverview(props) {
     const endDate = new Date();
@@ -19,7 +20,7 @@ export default function WeeklyOverview(props) {
             assignment.course = course.Title;
             assignment.jsDate = date;
             assignment.weight = course.calcSummary[assignment.Type] || 0;
-            assignment.numScore = /^\+?(0|[1-9]\d*)$/.test(assignment.Score.split(" ")[0]) ? parseInt(assignment.Score.split(" ")[0]) : -1;
+            assignment.numScore = GRADE_MATCH.test(assignment.Score.split(" ")[0]) ? parseInt(assignment.Score.split(" ")[0]) : -1;
             return (date >= startDate && date <= endDate);
         });
 
