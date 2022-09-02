@@ -13,6 +13,11 @@ import About from './pages/About';
 import TOS from './pages/TOS';
 import TOSModal from './components/TOSModal';
 
+import ReactGA from "react-ga";
+
+const TRACKING_ID = "G-YPCX2RSNW7";
+ReactGA.initialize(TRACKING_ID);
+
 export const AppContext = createContext();
 export const DebugContext = createContext();
 
@@ -25,6 +30,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem("bsv.appState", JSON.stringify(appState));
   }, [appState]);
+
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
 
   return (
     <OnlineStatusProvider>
