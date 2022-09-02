@@ -10,17 +10,21 @@ export default function CourseDisplay(props) {
     const forceUpdate = useForceUpdate();
 
     const calculateEditedScore = () => {
-        const weightedNumerator = props.Mark.Assignments.reduce((p, c) => {
-            const weight = props.Course.calcSummary[c.Type] || 0;
-            return c.modifiedScore == -1 ? p : p + weight * c.modifiedScore
-        }, 0);
+        // calculate each category separately, and then take the weighted sum
+        let numerator = 0;
+        let denominator = 0;
 
-        const weightedDenominator = props.Mark.Assignments.reduce((p, c) => {
-            const weight = props.Course.calcSummary[c.Type] || 0;
-            return c.modifiedScore == -1 ? p : p + weight;
-        }, 0);
+        for(const type in props.Course.calcSummary) {
+            const assignments = props.Mark.Assignments.filter(a => a.Type == type && a.modifiedScore != -1);
+            const percentage = assignments.reduce((p, c) => p += c.modifiedScore, 0) / assignments.length;
 
-        return Math.round((weightedNumerator / weightedDenominator) * 10) / 10;
+            if(assignments.length > 0) {
+                numerator += percentage * props.Course.calcSummary[type];
+                denominator += props.Course.calcSummary[type];
+            }
+        }
+
+        return Math.round(numerator / denominator);
     }
 
     const resetAll = () => {

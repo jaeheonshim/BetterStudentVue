@@ -8,7 +8,7 @@ export default function Assignment(props) {
     const forceUpdate = useForceUpdate();
 
     const onEditChange = (e) => {
-        props.assignment.modifiedScore = e.target.value == "" ? -1 : e.target.value;
+        props.assignment.modifiedScore = e.target.value == "" ? -1 : parseFloat(e.target.value);
         props.forceUpdate();
     }
 
@@ -16,8 +16,6 @@ export default function Assignment(props) {
         props.assignment.modifiedScore = GRADE_MATCH.test(props.assignment.Score.split(" ")[0]) ? parseInt(props.assignment.Score.split(" ")[0]) : -1;
         props.forceUpdate();
     }
-
-    console.log(props.Score);
 
     return (
         <div>
