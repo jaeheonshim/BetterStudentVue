@@ -1,7 +1,7 @@
 import axios from "axios";
 import { escapeXML, hhMMToSeconds, unescapeHtml } from "../util/textUtil";
 
-const applicationEndpoint = "https://apps.gwinnett.k12.ga.us/sismobile/spvue";
+const applicationEndpoint = "https://ga-gcps-psv.edupoint.com";
 const BODY_TEMPLATE = "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ProcessWebServiceRequest xmlns=\"http://edupoint.com/webservices/\"><userID>{user}</userID><password>{pass}</password><skipLoginLog>true</skipLoginLog><parent>false</parent><webServiceHandleName>PXPWebServices</webServiceHandleName><methodName>{method}</methodName><paramStr>&lt;Parms&gt;&lt;ChildIntID&gt;0&lt;/ChildIntID&gt;&lt;/Parms&gt;</paramStr></ProcessWebServiceRequest></soap:Body></soap:Envelope>";
 const TEST_TEMPLATE = `<v:Envelope xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d="http://www.w3.org/2001/XMLSchema" xmlns:c="http://schemas.xmlsoap.org/soap/encoding/" xmlns:v="http://schemas.xmlsoap.org/soap/envelope/"> <v:Header /> <v:Body> <ProcessWebServiceRequestMultiWeb xmlns="http://edupoint.com/webservices/" id="o0" c:root="1"> <userID i:type="d:string"> </userID> <password i:type="d:string"> </password> <skipLoginLog i:type="d:string"> true </skipLoginLog> <parent i:type="d:string"> false </parent> <webServiceHandleName i:type="d:string"> PXPWebServices </webServiceHandleName> <methodName i:type="d:string"> GETSAMLSTATUS </methodName> <paramStr i:type="d:string"> </paramStr> <webDBName i:type="d:string"> </webDBName> </ProcessWebServiceRequestMultiWeb> </v:Body> </v:Envelope>`;
 

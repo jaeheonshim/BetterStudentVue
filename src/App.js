@@ -15,7 +15,7 @@ import TOSModal from './components/TOSModal';
 
 import ReactGA from "react-ga";
 
-const TRACKING_ID = "G-YPCX2RSNW7";
+const TRACKING_ID = "UA-112388647-8";
 ReactGA.initialize(TRACKING_ID);
 
 export const AppContext = createContext();
