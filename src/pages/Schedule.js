@@ -211,7 +211,6 @@ export default function Schedule() {
         </Modal>
         <Header title="Schedule" />
         <div className="container pt-3">
-            <Alert variant="warning">GCPS has modified their schedule API endpoint. At the moment, class schedules will not update correctly.</Alert>
             <ScheduleTimer timeTitle={(currentTimeBlock && !currentTimeBlock.isBreak && currentTimeBlock.period && currentTimeBlock.period + ": " + currentTimeBlock.title) || (currentTimeBlock && currentTimeBlock.isBreak && ("Break " + currentTimeBlock.title))} elapsedTime={elapsedTime} elapsedPercentage={elapsedPercentage} remainingTime={remainingTime} />
             <ScheduleTable schedule={schedule} />
             <div className="d-grid">
