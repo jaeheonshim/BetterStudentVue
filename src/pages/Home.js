@@ -119,7 +119,7 @@ export default function Home() {
                     <WeeklyOverview onClose={hideWeekly} gradebook={appState.gradebook} />
                 }
 
-                <Alert variant="warning" className="mt-2"><b>Important</b><br />Never use information from BetterStudentVue to report grades in any official capacity. (e.g. college applications)</Alert>
+                <Alert variant="warning" className="mt-2">Never use information from BetterStudentVue to report grades in any official capacity. (e.g. college applications)</Alert>
             </div>
             <Footer />
             </>
