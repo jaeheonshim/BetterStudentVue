@@ -4,7 +4,7 @@ import { getGradebook, getStudentInfo } from "../data/Gradebook";
 import GradebookWidget from "../Home/GradebookWidget";
 import { useNavigate } from "react-router-dom";
 import CourseDisplay from "../Home/CourseDisplay";
-import { Button, Spinner } from "react-bootstrap";
+import { Alert, Button, Modal, Spinner } from "react-bootstrap";
 import Header from "../Header";
 import WeeklyOverview from "../Home/WeeklyOverview";
 import IDBarcode from "../components/IDBarcode";
@@ -118,6 +118,8 @@ export default function Home() {
                 {showWeekly &&
                     <WeeklyOverview onClose={hideWeekly} gradebook={appState.gradebook} />
                 }
+
+                <Alert variant="warning" className="mt-2"><b>Important</b><br />Never use information from BetterStudentVue to report grades in any official capacity. (e.g. college applications)</Alert>
             </div>
             <Footer />
             </>
