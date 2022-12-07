@@ -1,4 +1,4 @@
-import LoginForm from "../Login/LoginForm";
+import LoginForm from "../login/LoginForm";
 import { Card, Container } from "react-bootstrap";
 import { useContext } from "react";
 import { AppContext } from "../App";
