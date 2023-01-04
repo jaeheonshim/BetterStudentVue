@@ -4,7 +4,7 @@ import { getGradebook, getStudentInfo } from "../data/Gradebook";
 import GradebookWidget from "../Home/GradebookWidget";
 import { useNavigate } from "react-router-dom";
 import CourseDisplay from "../Home/CourseDisplay";
-import { Alert, Button, Modal, Spinner } from "react-bootstrap";
+import { Alert, Badge, Button, Modal, Spinner } from "react-bootstrap";
 import Header from "../Header";
 import WeeklyOverview from "../Home/WeeklyOverview";
 import IDBarcode from "../components/IDBarcode";
@@ -118,7 +118,7 @@ export default function Home() {
                 {showWeekly &&
                     <WeeklyOverview onClose={hideWeekly} gradebook={appState.gradebook} />
                 }
-                <Alert variant="success" className="mt-2">Please take some time to <a target="_blank" href="https://forms.gle/oJNBDEGKvUUPRwVQ6">provide feedback</a>.</Alert>
+                <Alert variant="success" className="mt-2">Barcode <Badge>BETA</Badge> is now available! Check it out in the menu.</Alert>
                 <p className="mt-2"><i>Never use information from BetterStudentVue to report grades in any official capacity. (e.g. college applications)</i></p>
             </div>
             <Footer />

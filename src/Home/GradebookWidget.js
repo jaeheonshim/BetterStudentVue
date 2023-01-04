@@ -9,6 +9,8 @@ export default function GradebookWidget(props) {
 
     const openCourse = props.openCourse;
 
+    console.log(gradebook.reportingPeriods);
+
     const content = gradebook.reportingPeriods.map((period, index) => (
         <GradingTermDisplay key={index} GradePeriod={period.GradePeriod}>
             {

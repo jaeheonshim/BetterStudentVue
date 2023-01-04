@@ -27,7 +27,7 @@ export default function Header(props) {
                     <Nav className="me-auto">
                         <Nav.Link href="/" active={location.pathname == "/"}>Gradebook</Nav.Link>
                         <Nav.Link href="/schedule" active={location.pathname == "/schedule"}>Schedule</Nav.Link>
-                        {/* <Nav.Link href="/barcode">Barcode <Badge>BETA</Badge></Nav.Link> */}
+                        <Nav.Link href="/barcode">Barcode <Badge>BETA</Badge></Nav.Link>
                     </Nav>
                     {appState.id &&
                         <Button onClick={logout} variant="outline-primary">Logout</Button>
